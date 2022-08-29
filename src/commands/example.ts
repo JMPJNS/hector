@@ -14,7 +14,7 @@ import {
 import { ButtonComponent, Discord, Slash, SlashOption } from "discordx"
 
 @Discord()
-export class Example {
+export class ExampleCommands {
   @Slash({ name: "hello" })
   async hello(
     @SlashOption({ name: "user", type: ApplicationCommandOptionType.User })

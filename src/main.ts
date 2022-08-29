@@ -5,7 +5,13 @@ import { dirname, importx } from "@discordx/importer"
 import { Koa } from "@discordx/koa"
 import type { Interaction, Message } from "discord.js"
 import { IntentsBitField } from "discord.js"
-import { Client } from "discordx"
+import { Client, DIService, typeDiDependencyRegistryEngine } from "discordx"
+import { Container, Service } from "typedi"
+import { DatabaseService } from "./services/database.service.js"
+
+DIService.engine = typeDiDependencyRegistryEngine
+  .setService(Service)
+  .setInjector(Container)
 
 export const bot = new Client({
   // To only use global commands (use @Guild for specific guild command), comment this line
@@ -25,7 +31,7 @@ export const bot = new Client({
 
   // Configuration for @SimpleCommand
   simpleCommand: {
-    prefix: "!",
+    prefix: "$",
   },
 })
 
@@ -56,35 +62,30 @@ bot.on("messageCreate", (message: Message) => {
 })
 
 async function run() {
-  // The following syntax should be used in the ECMAScript environment
+  // Db initialization
+  await Container.get(DatabaseService).dataSource.initialize()
+
+  // Bot initialization ------------
   await importx(
     dirname(import.meta.url) + "/{events,commands,api}/**/*.{ts,js}"
   )
 
-  // Let's start the bot
   if (!process.env.BOT_TOKEN) {
     throw Error("Could not find BOT_TOKEN in your environment")
   }
 
-  // Log in with your bot token
   await bot.login(process.env.BOT_TOKEN)
 
-  // ************* rest api section: start **********
-
-  // api: prepare server
+  // Webserver initialization ------------
   const server = new Koa()
 
-  // api: need to build the api server first
   await server.build()
 
-  // api: let's start the server now
   const port = process.env.PORT ?? 3000
   server.listen(port, () => {
     console.log(`discord api server started on ${port}`)
     console.log(`visit http://localhost:${port}/guilds`)
   })
-
-  // ************* rest api section: end **********
 }
 
 run()

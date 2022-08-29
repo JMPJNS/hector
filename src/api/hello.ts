@@ -1,10 +1,20 @@
 import { Get, Router } from "@discordx/koa"
 import type { Context } from "koa"
+import { ReminderEntity } from "../entities/reminder.entity.js"
 
 import { bot } from "../main.js"
+import { DatabaseService } from "../services/database.service.js"
 
 @Router()
 export class API {
+  constructor(private _database: DatabaseService) {}
+
+  @Get("/reminders")
+  async reminders(context: Context) {
+    const reminders = await this._database.dataSource.manager.find(ReminderEntity)
+    context.body = reminders.map(x => x.message).join(", ")
+  }
+
   @Get("/")
   index(context: Context): void {
     context.body = `

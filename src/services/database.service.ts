@@ -1,0 +1,35 @@
+import { DataSource } from "typeorm"
+import { Service } from "typedi"
+import { ReminderEntity } from "../entities/reminder.entity.js"
+
+@Service()
+export class DatabaseService {
+  public dataSource: DataSource
+
+  constructor() {
+    const type = process.env.DB_TYPE
+
+    const entities = [ReminderEntity]
+
+    if (type == "postgres") {
+      this.dataSource = new DataSource({
+        type: "postgres",
+        database: process.env.DB_DATABASE ?? "hector",
+        username: process.env.DB_USER ?? "postgres",
+        password: process.env.DB_PASSWORD ?? "",
+        host: process.env.DB_HOST ?? "localhost",
+        port: process.env.DB_PORT as unknown as number ?? 5432,
+        entities,
+      })
+    // if no other type is defined use sqlite default
+    } else {
+      this.dataSource = new DataSource({
+        type: "sqlite",
+        database: process.env.DB_DATABASE ?? "./hector.sqlite",
+        entities,
+        synchronize: true,
+        logging: "all"
+      })
+    }
+  }
+}
