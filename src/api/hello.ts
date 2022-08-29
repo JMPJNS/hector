@@ -1,7 +1,7 @@
-import { Get, Router } from "@discordx/koa";
-import type { Context } from "koa";
+import { Get, Router } from "@discordx/koa"
+import type { Context } from "koa"
 
-import { bot } from "../main.js";
+import { bot } from "../main.js"
 
 @Router()
 export class API {
@@ -17,11 +17,6 @@ export class API {
           <a href="https://www.npmjs.com/package/@discordx/koa">@discordx/koa</a>
         </p>
       </div>
-    `;
-  }
-
-  @Get()
-  guilds(context: Context): void {
-    context.body = `${bot.guilds.cache.map((g) => `${g.id}: ${g.name}\n`)}`;
+    `
   }
 }
