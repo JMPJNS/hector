@@ -29,7 +29,7 @@ export class ReminderCommands {
     reminder.message = message
     reminder.time = new Date(new Date().getTime() + minutes*60000)
 
-    await this._database.dataSource.manager.save(reminder)
+    await this._database.manager.save(reminder)
 
     await interaction.editReply(`I will remind you in ${minutes} minutes!`)
   }

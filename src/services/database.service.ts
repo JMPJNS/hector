@@ -1,15 +1,18 @@
-import { DataSource } from "typeorm"
+import { DataSource, EntityManager } from "typeorm"
 import { Service } from "typedi"
-import { ReminderEntity } from "../entities/reminder.entity.js"
+
+// Entities
+import { ReminderEntity, GuildEntity, UserEntity, UserLevelEntity } from "../entities/index.js"
 
 @Service()
 export class DatabaseService {
   public dataSource: DataSource
+  public manager: EntityManager
 
   constructor() {
     const type = process.env.DB_TYPE
 
-    const entities = [ReminderEntity]
+    const entities = [ReminderEntity, GuildEntity, UserLevelEntity, UserEntity]
 
     if (type == "postgres") {
       this.dataSource = new DataSource({
@@ -28,8 +31,10 @@ export class DatabaseService {
         database: process.env.DB_DATABASE ?? "./hector.sqlite",
         entities,
         synchronize: true,
-        logging: "all"
+        // logging: "all",
       })
     }
+
+    this.manager = this.dataSource.manager
   }
 }
