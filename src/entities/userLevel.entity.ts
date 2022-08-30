@@ -15,6 +15,9 @@ export class UserLevelEntity {
   @Column({default: 1})
   points: number
 
-  @Column()
+  @Column({nullable: true})
   lastUpdated?: Date
+
+  @Column({nullable: true})
+  currentRoleId?: string
 }

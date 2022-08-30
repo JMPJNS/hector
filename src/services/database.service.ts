@@ -3,6 +3,7 @@ import { Service } from "typedi"
 
 // Entities
 import { ReminderEntity, GuildEntity, UserEntity, UserLevelEntity } from "../entities/index.js"
+import { GuildLevelingRoleEntity } from "../entities/guildLevelingRole.entity.js"
 
 @Service()
 export class DatabaseService {
@@ -12,7 +13,7 @@ export class DatabaseService {
   constructor() {
     const type = process.env.DB_TYPE
 
-    const entities = [ReminderEntity, GuildEntity, UserLevelEntity, UserEntity]
+    const entities = [ReminderEntity, GuildLevelingRoleEntity, GuildEntity, UserLevelEntity, UserEntity]
 
     if (type == "postgres") {
       this.dataSource = new DataSource({

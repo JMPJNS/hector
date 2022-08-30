@@ -4,15 +4,22 @@ import { DatabaseService } from "./database.service.js"
 
 @Service()
 export class GuildService {
-  constructor(private _db: DatabaseService) {}
+  constructor(private _db: DatabaseService) { }
 
   public async getByGuildId(guildId: string, cacheTime = 60000): Promise<GuildEntity> {
-    const found = await this._db.manager.findOne(GuildEntity, {cache: cacheTime, where: {guildId}})
+    const found = await this._db.manager.findOne(GuildEntity,
+      {
+        cache: cacheTime,
+        where: { guildId },
+        relations: ["levelingRoles"],
+        order: { levelingRoles: { pointsRequired: "DESC" } },
+      })
+
     if (found) return found
 
     const newGuild = new GuildEntity()
     newGuild.guildId = guildId
 
     return this._db.manager.save(newGuild)
-  } 
+  }
 }
