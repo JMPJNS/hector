@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from "typeorm"
+import { Language } from "../types/types.js"
 import { GuildLevelingRoleEntity } from "./guildLevelingRole.entity.js"
 
 @Entity()
@@ -45,4 +46,7 @@ export class GuildEntity {
    */
    @Column({default: "[user] has leveled up!", nullable: true})
    levelUpMessage?: string
+
+	 @Column({default: "en"})
+	 language: Language
 }

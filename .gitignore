@@ -1,9 +1,6 @@
 # files
-.vscode
 .env
 .env.local
-package-lock.json
-yarn.lock
 hector.sqlite
 
 # folders

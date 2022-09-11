@@ -24,6 +24,7 @@ export const bot = new Client({
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildMessageReactions,
     IntentsBitField.Flags.GuildVoiceStates,
+		IntentsBitField.Flags.MessageContent,
   ],
 
   // Debug logs are disabled in silent mode
@@ -70,11 +71,11 @@ async function run() {
     dirname(import.meta.url) + "/{events,commands,api}/**/*.{ts,js}"
   )
 
-  if (!process.env.BOT_TOKEN) {
-    throw Error("Could not find BOT_TOKEN in your environment")
+  if (!process.env.DISCORD_TOKEN) {
+    throw Error("Could not find DISCORD_TOKEN in your environment")
   }
 
-  await bot.login(process.env.BOT_TOKEN)
+  await bot.login(process.env.DISCORD_TOKEN)
 
   // Webserver initialization ------------
   const server = new Koa()

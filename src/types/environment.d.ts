@@ -1,7 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      BOT_TOKEN: string
+      DISCORD_TOKEN: string
       DB_TYPE: "sqlite" | "postgres"
       DB_HOST?: string
       DB_PORT?: number

@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from "typeorm"
+import { Language } from "../types/types.js"
 import { UserLevelEntity } from "./userLevel.entity.js"
 
 @Entity()
@@ -13,4 +14,7 @@ export class UserEntity {
   // Leveling System
   @OneToMany(() => UserLevelEntity, (ul) => ul.user)
   levels: Relation<UserLevelEntity[]>
+
+	@Column({default: null, nullable: true})
+	 language: Language
 }
