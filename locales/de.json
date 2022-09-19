@@ -1,3 +1,8 @@
 {
-	"HELLO {{name}}": "Hallo {{name}}, wie geht es dir heute?"
+	"HELLO {{name}}": "Hallo {{name}}, wie geht es dir heute?",
+	"ONLY_ADMINS": "Nur Admins können diese Funktion verwenden!",
+	"ONLY_GUILDS": "Diese Funktion ist nur in Gilden verfügbar!",
+	"SET_{{name}}_LANG_{{lang}}": "{{name}}s sprache wurde auf {{lang}} gesetzt!",
+	"USER_LANG": "User Sprache",
+	"GUILD_LANG": "Gilden Sprache"
 }

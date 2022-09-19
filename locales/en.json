@@ -1,3 +1,8 @@
 {
-	"HELLO {{name}}": "Hello {{name}}, how are you doing today?"
+	"HELLO {{name}}": "Hello {{name}}, how are you doing today?",
+	"ONLY_ADMINS": "Only admins can use this!",
+	"ONLY_GUILDS": "This option is only available in guilds!",
+	"SET_{{name}}_LANG_{{lang}}": "{{name}}s language was set to {{lang}}!",
+	"USER_LANG": "User Language",
+	"GUILD_LANG": "Guild Language"
 }

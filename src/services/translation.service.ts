@@ -1,6 +1,6 @@
-import { CommandInteraction } from "discord.js"
+import { BaseInteraction } from "discord.js"
 import { Locale } from "../types/types.js"
-import i18n, { I18n } from "i18n"
+import i18n from "i18n"
 import path from "path"
 import { Service } from "typedi"
 import { GuildEntity, UserEntity } from "../entities"
@@ -21,6 +21,8 @@ export class TranslationService {
 		})
 
 		this.translator.setLocale("en")
+
+		this.__ = this.translator.__
 	}
 
 	public readonly locales: Locale = {
@@ -39,11 +41,11 @@ export class TranslationService {
 		this.translator.setLocale(lang)
 	}
 
-	public async setLanguageByInteraction(interaction: CommandInteraction) {
+	public async setLanguageByInteraction<T extends BaseInteraction>(interaction: T) {
 		const guild = interaction.guildId ? await this._gs.getByGuildId(interaction.guildId) : undefined
 		const user = await this._us.getByUserId(interaction.user.id)
 		this.setLanguage(user, guild)
 	}
-	
+	public __
 	public translator: i18nAPI = {} as i18nAPI
 }

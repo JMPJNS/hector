@@ -28,15 +28,16 @@ export class SettingsCommands {
   async language(
     interaction: CommandInteraction
   ): Promise<void> {
+		await this._ts.setLanguageByInteraction(interaction)
     await interaction.deferReply({ephemeral: true})
 
     const userLangSelect = new SelectMenuBuilder()
 		.setCustomId("user-language-select")
-		.setPlaceholder("User Language")
+		.setPlaceholder(this._ts.__("USER_LANG"))
 		
 		const guildLangSelect = new SelectMenuBuilder()
 		.setCustomId("guild-language-select")
-		.setPlaceholder("Guild Language")
+		.setPlaceholder(this._ts.__("GUILD_LANG"))
 
 		for (const code in this._ts.locales) {
 			const lang = this._ts.locales[code as Language]
@@ -44,14 +45,14 @@ export class SettingsCommands {
 			userLangSelect.addOptions({
 				label: lang.name,
 				emoji: lang.flag,
-				description: "User Language",
+				description: this._ts.__("USER_LANG"),
 				value: code,
 			})
 
 			guildLangSelect.addOptions({
 				label: lang.name,
 				emoji: lang.flag,
-				description: "Guild Language",
+				description: this._ts.__("GUILD_LANG"),
 				value: code,
 			})
 		}
@@ -72,27 +73,32 @@ export class SettingsCommands {
 
   @SelectMenuComponent({ id: "user-language-select" })
   async userLanguageModal(interaction: SelectMenuInteraction) {
+		await this._ts.setLanguageByInteraction(interaction)
     await interaction.deferReply({ephemeral:  true})
 		const code = interaction.values[0] as Language
 		const lang = this._ts.locales[code]
 
 		await this._us.setLanguage(interaction.user.id, code)
-		interaction.editReply(`set ${interaction.user.username}s languate to ${lang.name}`)
+		await this._ts.setLanguageByInteraction(interaction)
+		interaction.editReply(this._ts.__("SET_{{name}}_LANG_{{lang}}", {name: interaction.user.username, lang: lang.name}))
   }
 
 	@SelectMenuComponent({ id: "guild-language-select" })
   async guildLanguageModal(interaction: SelectMenuInteraction) {
-		if (!interaction.guildId)
-			return interaction.reply({content: "Only supported on guilds", ephemeral: true})
+		await this._ts.setLanguageByInteraction(interaction)
+
+		if (!interaction.guildId || !interaction.guild)
+			return interaction.reply({content: this._ts.__("ONLY_GUILDS"), ephemeral: true})
 
 		if (!(interaction.member as GuildMember)?.permissions.has("Administrator"))
-			return interaction.reply({content: "Only admins can use this", ephemeral: true})
+			return interaction.reply({content: this._ts.__("ONLY_ADMINS"), ephemeral: true})
 
     await interaction.deferReply({ephemeral: true})
 		const code = interaction.values[0] as Language
 		const lang = this._ts.locales[code]
 
 		await this._gs.setLanguage(interaction.guildId, code)
-		interaction.editReply(`set ${interaction.guild?.name}s languate to ${lang.name}`)
+		await this._ts.setLanguageByInteraction(interaction)
+		interaction.editReply(this._ts.__("SET_{{name}}_LANG_{{lang}}", {name: interaction.guild.name, lang: lang.name}))
   }
 }

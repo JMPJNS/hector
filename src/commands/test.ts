@@ -1,7 +1,7 @@
 import type {
   CommandInteraction,
 } from "discord.js"
-import { Discord, Guild, Slash, SlashOption } from "discordx"
+import { Discord, Guild, Slash } from "discordx"
 import { DatabaseService } from "../services/database.service.js"
 import { GuildService } from "../services/guild.service.js"
 import { TranslationService } from "../services/translation.service.js"
