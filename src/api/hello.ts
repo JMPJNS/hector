@@ -18,11 +18,12 @@ export class API {
 
   @Get("/")
   index(ctx: Context) {
+		const hello = html`<span style="color: blue;">Hello</span>`
 		const guilds = bot.guilds.cache.map(x => `<div>${x.name}</div>`).join(" ")
     ctx.body = html`
       <div style="text-align: center">
         <h1>
-          Serving the following guilds
+          ${hello} Serving the following guilds
         </h1>
         <p>
           ${guilds}
