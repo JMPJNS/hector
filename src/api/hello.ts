@@ -1,5 +1,6 @@
 import { Get, Router } from "@discordx/koa"
 import type { Context } from "koa"
+import { html } from "lit-html"
 import { ReminderEntity } from "../entities/reminder.entity.js"
 
 import { bot } from "../main.js"
@@ -10,21 +11,21 @@ export class API {
   constructor(private _database: DatabaseService) {}
 
   @Get("/reminders")
-  async reminders(context: Context) {
+  async reminders(ctx: Context) {
     const reminders = await this._database.dataSource.manager.find(ReminderEntity)
-    context.body = reminders.map(x => x.message).join(", ")
+    ctx.body = reminders.map(x => x.message).join(", ")
   }
 
   @Get("/")
-  index(context: Context): void {
-    context.body = `
+  index(ctx: Context) {
+		const guilds = bot.guilds.cache.map(x => `<div>${x.name}</div>`).join(" ")
+    ctx.body = html`
       <div style="text-align: center">
         <h1>
-          <a href="https://discordx.js.org">discord.ts</a> rest api server example
+          Serving the following guilds
         </h1>
         <p>
-          powered by <a href="https://koajs.com/">koa</a> and
-          <a href="https://www.npmjs.com/package/@discordx/koa">@discordx/koa</a>
+          ${guilds}
         </p>
       </div>
     `

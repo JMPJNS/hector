@@ -8,6 +8,7 @@ import { IntentsBitField } from "discord.js"
 import { Client, DIService, typeDiDependencyRegistryEngine } from "discordx"
 import { Container, Service } from "typedi"
 import { DatabaseService } from "./services/database.service.js"
+import { renderLitMiddleware } from "./helpers/renderLit.js"
 
 DIService.engine = typeDiDependencyRegistryEngine
   .setService(Service)
@@ -80,12 +81,13 @@ async function run() {
   // Webserver initialization ------------
   const server = new Koa()
 
+	server.middleware.unshift(renderLitMiddleware)
+
   await server.build()
 
   const port = process.env.PORT ?? 3000
   server.listen(port, () => {
-    console.log(`discord api server started on ${port}`)
-    console.log(`visit http://localhost:${port}/guilds`)
+    console.log(`koa api server started on ${port}`)
   })
 }
 

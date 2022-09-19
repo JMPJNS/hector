@@ -33,9 +33,5 @@ export class TranslationService {
 		this.setLanguage(user, guild)
 	}
 	
-	// need to ignore typescript here since i18n dynamically sets this objects functions in the constructor
-	// FIXME: figure out how to do it without ts-ignore
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	public translator: i18nAPI = {}
+	public translator: i18nAPI = {} as i18nAPI
 }
