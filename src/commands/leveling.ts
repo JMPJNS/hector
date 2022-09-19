@@ -20,10 +20,10 @@ import { UserService } from "../services/user.service.js"
 export class LevelingCommands {
 
   constructor(
-    private _db: DatabaseService,
-    private _ls: LevelingService,
-    private _us: UserService,
-    private _gs: GuildService,
+    private readonly _db: DatabaseService,
+    private readonly _ls: LevelingService,
+    private readonly _us: UserService,
+    private readonly _gs: GuildService,
   ) { }
 
   @Slash({ name: "level" })

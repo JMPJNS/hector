@@ -12,7 +12,9 @@ import { DatabaseService } from "../services/database.service.js"
 @Discord()
 export class ReminderCommands {
 
-  constructor(private _database: DatabaseService) {}
+  constructor(
+		private readonly _db: DatabaseService,
+	) {}
 
   @Slash({ name: "remind" })
   async hello(
@@ -29,7 +31,7 @@ export class ReminderCommands {
     reminder.message = message
     reminder.time = new Date(new Date().getTime() + minutes*60000)
 
-    await this._database.manager.save(reminder)
+    await this._db.manager.save(reminder)
 
     await interaction.editReply(`I will remind you in ${minutes} minutes!`)
   }

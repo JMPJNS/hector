@@ -1,4 +1,5 @@
 import { CommandInteraction } from "discord.js"
+import { Locale } from "../types/types.js"
 import i18n, { I18n } from "i18n"
 import path from "path"
 import { Service } from "typedi"
@@ -14,12 +15,23 @@ export class TranslationService {
 		private _us: UserService,
 	) {
 		i18n.configure({
-			locales: ["en", "de"],
+			locales: Object.keys(this.locales),
 			register: this.translator,
 			directory: path.join("locales")
 		})
 
 		this.translator.setLocale("en")
+	}
+
+	public readonly locales: Locale = {
+		en: {
+			flag: "🇬🇧",
+			name: "English"
+		},
+		de: {
+			flag: "🇩🇪",
+			name: "Deutsch"
+		}
 	}
 
 	public setLanguage(user?: UserEntity, guild?: GuildEntity) {

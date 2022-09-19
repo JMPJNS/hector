@@ -1,6 +1,7 @@
 import { Service } from "typedi"
 import { UserEntity } from "../entities/user.entity.js"
 import { UserLevelEntity } from "../entities/userLevel.entity.js"
+import { Language } from "../types/types.js"
 import { DatabaseService } from "./database.service.js"
 
 @Service()
@@ -28,4 +29,10 @@ export class UserService {
     
     return this._db.manager.save(newLevel)
   }
+
+	public async setLanguage(userId: string, lang: Language) {
+		const user = await this.getByUserId(userId)
+		user.language = lang
+		return this._db.manager.save(user)
+	}
 }

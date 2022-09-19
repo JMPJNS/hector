@@ -11,10 +11,10 @@ import { UserService } from "../services/user.service.js"
 export class TestCommands {
 
   constructor(
-		private _db: DatabaseService, 
-		private _ts: TranslationService, 
-		private _gs: GuildService,
-		private _us: UserService,
+		private readonly _db: DatabaseService, 
+		private readonly _ts: TranslationService, 
+		private readonly _gs: GuildService,
+		private readonly _us: UserService,
 	) {}
 
 	@Guild("716635355020918784")
