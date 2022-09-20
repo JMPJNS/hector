@@ -4,5 +4,7 @@
 	"ONLY_GUILDS": "Diese Funktion ist nur in Gilden verfügbar!",
 	"SET_{{name}}_LANG_{{lang}}": "{{name}}s sprache wurde auf {{lang}} gesetzt!",
 	"USER_LANG": "User Sprache",
-	"GUILD_LANG": "Gilden Sprache"
+	"GUILD_LANG": "Gilden Sprache",
+	"ROLE_ADD_SUCCESS": "Die Rolle wurde erfolgreich hinzugefügt!",
+	"ROLE_ADD_ERROR": "Beim Hinzufügen der Rolle ist ein Fehler passiert!"
 }

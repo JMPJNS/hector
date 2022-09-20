@@ -8,11 +8,12 @@ import {
 import {
   ApplicationCommandOptionType,
 } from "discord.js"
-import { Discord, Slash, SlashGroup, SlashOption } from "discordx"
+import { Discord, Guild, Slash, SlashGroup, SlashOption } from "discordx"
 import { GuildLevelingRoleEntity } from "../entities/guildLevelingRole.entity.js"
 import { DatabaseService } from "../services/database.service.js"
 import { GuildService } from "../services/guild.service.js"
 import { LevelingService } from "../services/leveling.service.js"
+import { TranslationService } from "../services/translation.service.js"
 import { UserService } from "../services/user.service.js"
 
 @Discord()
@@ -24,6 +25,7 @@ export class LevelingCommands {
     private readonly _ls: LevelingService,
     private readonly _us: UserService,
     private readonly _gs: GuildService,
+		private readonly _ts: TranslationService,
   ) { }
 
   @Slash({ name: "level" })
@@ -47,15 +49,15 @@ export class LevelingCommands {
     interaction.editReply({ embeds: [embed] })
   }
 
-  @Slash({ name: "add-leveling-role" })
+  @Slash({ name: "add-leveling-role", nameLocalizations: {"de": "leveling-rolle-hinzufügen"} })
   @SlashGroup("leveling")
   async addLevelingRole(
-    @SlashOption({ name: "role", type: ApplicationCommandOptionType.Role }) role: Role,
-    @SlashOption({ name: "points", type: ApplicationCommandOptionType.Integer }) points: number,
+    @SlashOption({ name: "role", nameLocalizations: {"de": "rolle"}, type: ApplicationCommandOptionType.Role }) role: Role,
+    @SlashOption({ name: "points", nameLocalizations: {"de": "punkte"}, type: ApplicationCommandOptionType.Integer }) points: number,
     interaction: CommandInteraction
   ) {
     if (!interaction.guild?.id) {
-      await interaction.reply("only supported in guilds")
+      await interaction.reply({ephemeral: true, content: this._ts.__("ONLY_GUILDS")})
       return
     }
 
@@ -72,9 +74,9 @@ export class LevelingCommands {
       glr.pointsRequired = points
       await this._db.manager.save(glr)
       // FIXME translations
-      await interaction.editReply("the role was added successfully")
+      await interaction.editReply(this._ts.__("ROLE_ADD_SUCCESS"))
     } catch (e) {
-      await interaction.editReply("there was an error adding the role")
+      await interaction.editReply(this._ts.__("ROLE_ADD_ERROR"))
     }
   }
 }

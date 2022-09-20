@@ -24,6 +24,7 @@ export class SettingsCommands {
     private readonly _gs: GuildService,
 	) {}
 
+	@SlashGroup("settings")
   @Slash({ name: "language", nameLocalizations: {de: "sprache"} })
   async language(
     interaction: CommandInteraction
