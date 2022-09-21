@@ -1,18 +1,19 @@
 import { TextChannel, Message, Role } from "discord.js"
 import { Service } from "typedi"
 import { GuildEntity } from "../entities/guild.entity.js"
-import { GuildLevelingRoleEntity } from "../entities/guildLevelingRole.entity.js"
 import { UserLevelEntity } from "../entities/userLevel.entity.js"
 import { DatabaseService } from "./database.service.js"
 import { GuildService } from "./guild.service.js"
+import { LoggingService } from "./logging.service.js"
 import { UserService } from "./user.service.js"
 
 @Service()
 export class LevelingService {
   constructor(
-    private _db: DatabaseService,
-    private _gs: GuildService,
-    private _us: UserService,
+    private readonly _db: DatabaseService,
+    private readonly _gs: GuildService,
+    private readonly _us: UserService,
+		private readonly _log: LoggingService,
   ) { }
 
   public async handleMessage(message: Message<boolean>) {
@@ -69,13 +70,11 @@ export class LevelingService {
       const currentRole = level.currentRoleId ? await message.guild?.roles.fetch(level.currentRoleId) : null
 
       if (newRole) {
-        // FIXME use a proper logging system that also includes guild/channel and time in the logger and can optionally log to a channel or logfile
-        await message.member?.roles.add(newRole).catch(e => console.error(`could not give role ${newRole.id} to user ${message.member?.id}`, e))
+        await message.member?.roles.add(newRole).catch(e => this._log.error(`could not give role ${newRole.id} to user ${message.member?.id}`, e))
       }
 
       if (currentRole) {
-        // FIXME also logger here
-        await message.member?.roles.remove(currentRole).catch(e => console.error(`could not remove role ${currentRole.id} from user ${message.member?.id}`, e))
+        await message.member?.roles.remove(currentRole).catch(e => this._log.error(`could not remove role ${currentRole.id} from user ${message.member?.id}`, e))
       }
 
       level.currentRoleId = newRole?.id
@@ -83,8 +82,7 @@ export class LevelingService {
 
       if (guild.levelUpMessage) {
         const messageChannelId = guild.botMessageChannelId ?? message.channelId
-        // FIXME logger
-        const messageChannel = await message.client.channels.fetch(messageChannelId).catch(e => console.error(`could not get ${guild.guildId}s message channel`, e))
+        const messageChannel = await message.client.channels.fetch(messageChannelId).catch(e => this._log.error(`could not get ${guild.guildId}s message channel`, e))
 
         const preparedMessage = guild.levelUpMessage
                                           .replace("[user]", `${message.member}`)

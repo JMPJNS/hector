@@ -9,10 +9,14 @@ import { Client, DIService, typeDiDependencyRegistryEngine } from "discordx"
 import { Container, Service } from "typedi"
 import { DatabaseService } from "./services/database.service.js"
 import { renderLitMiddleware } from "./helpers/renderLit.js"
+import { LoggingService } from "./services/logging.service.js"
 
+// setup dependency injection
 DIService.engine = typeDiDependencyRegistryEngine
   .setService(Service)
   .setInjector(Container)
+
+const log = await Container.get(LoggingService)
 
 export const bot = new Client({
   // To only use global commands (use @Guild for specific guild command), comment this line
@@ -44,15 +48,7 @@ bot.once("ready", async () => {
   // Synchronize applications commands with Discord
   await bot.initApplicationCommands()
 
-  // To clear all guild commands, uncomment this line,
-  // This is useful when moving from guild commands to global commands
-  // It must only be executed once
-  //
-  //  await bot.clearApplicationCommands(
-  //    ...bot.guilds.cache.map((g) => g.id)
-  //  );
-
-  console.log("Bot started")
+	log.info("Bot Started")
 })
 
 bot.on("interactionCreate", (interaction: Interaction) => {
@@ -87,7 +83,7 @@ async function run() {
 
   const port = process.env.PORT ?? 3000
   server.listen(port, () => {
-    console.log(`koa api server started on ${port}`)
+    log.info(`koa api server started on ${port}`)
   })
 }
 

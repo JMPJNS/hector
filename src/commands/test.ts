@@ -4,6 +4,7 @@ import type {
 import { Discord, Guild, Slash } from "discordx"
 import { DatabaseService } from "../services/database.service.js"
 import { GuildService } from "../services/guild.service.js"
+import { LoggingService } from "../services/logging.service.js"
 import { TranslationService } from "../services/translation.service.js"
 import { UserService } from "../services/user.service.js"
 
@@ -15,6 +16,7 @@ export class TestCommands {
 		private readonly _ts: TranslationService, 
 		private readonly _gs: GuildService,
 		private readonly _us: UserService,
+		private readonly _log: LoggingService,
 	) {}
 
 	@Guild("716635355020918784")
@@ -26,7 +28,7 @@ export class TestCommands {
 		
     const translated = this._ts.translator.__("HELLO {{name}}", {name: interaction.user.username})
 
-		console.log(translated)
+		this._log.silly(translated)
 		await interaction.reply(translated)
   }
 }
