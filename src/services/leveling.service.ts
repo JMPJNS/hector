@@ -40,7 +40,7 @@ export class LevelingService {
 		// add time based points, this should be done on the database level but idk how
 		const pointsPerDay = 10
 		const daysSinceLastUpdate = Math.round(Math.abs((level.lastTimeBasedPointUpdate.valueOf() - new Date().valueOf()) / (24 * 60 * 60 * 1000)))
-		level.timeBasedPoints += pointsPerDay*daysSinceLastUpdate
+		level.timeBasedPoints += pointsPerDay * daysSinceLastUpdate * guild.levelingMultiplier
 		level.lastTimeBasedPointUpdate = new Date()
 
 		// only add points if the last update was long enough ago
