@@ -44,7 +44,7 @@ export class LevelingCommands {
 
     const embed = new EmbedBuilder()
       .setThumbnail(user.avatarURL())
-      .addFields({ name: "xp", value: level.points.toString() })
+      .addFields({ name: "xp", value: level.totalPoints.toString() })
 
     interaction.editReply({ embeds: [embed] })
   }

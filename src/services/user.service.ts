@@ -3,6 +3,7 @@ import { UserEntity } from "../entities/user.entity.js"
 import { UserLevelEntity } from "../entities/userLevel.entity.js"
 import { Language } from "../types/types.js"
 import { DatabaseService } from "./database.service.js"
+import { bot } from "../main.js"
 
 @Service()
 export class UserService {
@@ -25,7 +26,12 @@ export class UserService {
     const newLevel = new UserLevelEntity()
     newLevel.guildId = guildId
     newLevel.user = await this.getByUserId(userId)
-    newLevel.lastUpdated = new Date()
+
+		const dcMember = bot.guilds.cache.get(guildId)?.members.cache.get(userId)
+		newLevel.joinDate = dcMember?.joinedAt ?? new Date()
+		newLevel.lastTimeBasedPointUpdate = newLevel.joinDate
+
+		newLevel.lastPointUpdate = new Date()
     
     return this._db.manager.save(newLevel)
   }
