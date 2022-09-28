@@ -1,13 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Relation } from "typeorm"
+import { Entity, Column, ManyToOne, Relation } from "typeorm"
+import { DeepPartial } from "../types/types.js"
+import { HectorEntity } from "./base.entity.js"
 import { GuildEntity } from "./guild.entity.js"
 
 @Entity()
-export class GuildLevelingRoleEntity {
-  // General Information
-  @PrimaryGeneratedColumn()
-  id: number
+export class GuildLevelingRoleEntity extends HectorEntity {
+	constructor(input?: DeepPartial<GuildLevelingRoleEntity>) {
+		super(input)
+	}
 
-  @ManyToOne(() => GuildEntity, (guild) => guild.levelingRoles, {})
+  // General Information
+
+  @ManyToOne(() => GuildEntity, (guild) => guild.levelingRoles, {onDelete: "CASCADE"})
   guild: Relation<GuildEntity>
 
   /**

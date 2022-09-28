@@ -1,12 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Relation, UpdateDateColumn } from "typeorm"
+import { Entity, Column, ManyToOne, Relation, DeepPartial } from "typeorm"
+import { HectorEntity } from "./base.entity.js"
 import { UserEntity } from "./user.entity.js"
 
 @Entity()
-export class UserLevelEntity {
-  @PrimaryGeneratedColumn()
-  id: number
+export class UserLevelEntity extends HectorEntity {
+	constructor(input?: DeepPartial<UserLevelEntity>) {
+		super(input)
+	}
 
-  @ManyToOne(() => UserEntity, (user) => user.levels)
+  @ManyToOne(() => UserEntity, (user) => user.levels, {onDelete: "CASCADE"})
   user: Relation<UserEntity>
 
   @Column()

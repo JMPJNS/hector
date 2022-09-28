@@ -34,6 +34,7 @@ export class LevelingCommands {
     @SlashOption({ name: "user", type: ApplicationCommandOptionType.User, required: false }) user: GuildMember | User | undefined,
     interaction: CommandInteraction
   ): Promise<void> {
+		await this._ts.setLanguageByInteraction(interaction)
     const guildId = interaction.guild?.id
     if (!guildId) return
 
@@ -56,6 +57,7 @@ export class LevelingCommands {
     @SlashOption({ name: "points", nameLocalizations: {"de": "punkte"}, type: ApplicationCommandOptionType.Integer }) points: number,
     interaction: CommandInteraction
   ) {
+		await this._ts.setLanguageByInteraction(interaction)
     if (!interaction.guild?.id) {
       await interaction.reply({ephemeral: true, content: this._ts.__("ONLY_GUILDS")})
       return

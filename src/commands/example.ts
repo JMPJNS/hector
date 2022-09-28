@@ -12,15 +12,21 @@ import {
   ButtonStyle,
 } from "discord.js"
 import { ButtonComponent, Discord, Slash, SlashOption } from "discordx"
+import { TranslationService } from "../services/translation.service.js"
 
 @Discord()
 export class ExampleCommands {
+	constructor(
+		private readonly _ts: TranslationService,
+	) {}
+
   @Slash({ name: "hello" })
   async hello(
     @SlashOption({ name: "user", type: ApplicationCommandOptionType.User })
     user: User | GuildMember | undefined,
     interaction: CommandInteraction
   ): Promise<void> {
+		await this._ts.setLanguageByInteraction(interaction)
     await interaction.deferReply()
 
     const helloBtn = new ButtonBuilder()

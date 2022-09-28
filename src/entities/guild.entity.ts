@@ -1,12 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from "typeorm"
-import { Language } from "../types/types.js"
+import { Entity, Column, OneToMany, Relation } from "typeorm"
+import { DeepPartial, Language } from "../types/types.js"
+import { HectorEntity } from "./base.entity.js"
 import { GuildLevelingRoleEntity } from "./guildLevelingRole.entity.js"
 
 @Entity()
-export class GuildEntity {
+export class GuildEntity extends HectorEntity {
+	constructor(input?: DeepPartial<GuildEntity>) {
+		super(input)
+	}
   // General Information
-  @PrimaryGeneratedColumn()
-  id: number
 
   @Column()
   guildId: string

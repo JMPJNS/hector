@@ -2,8 +2,15 @@ import { DataSource, EntityManager } from "typeorm"
 import { Service } from "typedi"
 
 // Entities
-import { ReminderEntity, GuildEntity, UserEntity, UserLevelEntity } from "../entities/index.js"
-import { GuildLevelingRoleEntity } from "../entities/guildLevelingRole.entity.js"
+import {
+	ReminderEntity, 
+	GuildEntity, 
+	UserEntity, 
+	UserLevelEntity, 
+	GuildLevelingRoleEntity,
+	SelfRoleMessageEntity,
+	SelfRoleEntity,
+} from "../entities/entities.js"
 
 @Service()
 export class DatabaseService {
@@ -13,7 +20,15 @@ export class DatabaseService {
   constructor() {
     const type = process.env.DB_TYPE
 
-    const entities = [ReminderEntity, GuildLevelingRoleEntity, GuildEntity, UserLevelEntity, UserEntity]
+    const entities = [
+			ReminderEntity, 
+			GuildLevelingRoleEntity, 
+			GuildEntity, 
+			UserLevelEntity, 
+			UserEntity,
+			SelfRoleMessageEntity,
+			SelfRoleEntity,
+		]
 
     if (type == "postgres") {
       this.dataSource = new DataSource({

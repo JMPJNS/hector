@@ -3,7 +3,7 @@ import { Locale } from "../types/types.js"
 import i18n from "i18n"
 import path from "path"
 import { Service } from "typedi"
-import { GuildEntity, UserEntity } from "../entities"
+import { GuildEntity, UserEntity } from "../entities/entities"
 import { GuildService } from "./guild.service.js"
 import { UserService } from "./user.service.js"
 

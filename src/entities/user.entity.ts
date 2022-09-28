@@ -1,13 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from "typeorm"
-import { Language } from "../types/types.js"
+import { Entity, Column, OneToMany, Relation } from "typeorm"
+import { DeepPartial, Language } from "../types/types.js"
+import { HectorEntity } from "./base.entity.js"
 import { UserLevelEntity } from "./userLevel.entity.js"
 
 @Entity()
-export class UserEntity {
-  // General Information
-  @PrimaryGeneratedColumn()
-  id: number
+export class UserEntity extends HectorEntity {
+	constructor(input?: DeepPartial<UserEntity>) {
+		super(input)
+	}
 
+  // General Information
   @Column()
   userId: string
 
