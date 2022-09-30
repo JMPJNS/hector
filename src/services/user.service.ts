@@ -9,8 +9,14 @@ import { bot } from "../main.js"
 export class UserService {
   constructor(private _db: DatabaseService) {}
 
-  public async getByUserId(userId: string, cacheTime = 1000): Promise<UserEntity> {
-    const found = await this._db.manager.findOne(UserEntity, {cache: cacheTime, where: {userId}})
+  public async getByUserId(
+    userId: string,
+    cacheTime = 1000
+  ): Promise<UserEntity> {
+    const found = await this._db.manager.findOne(UserEntity, {
+      cache: cacheTime,
+      where: { userId },
+    })
     if (found) return found
 
     const newUser = new UserEntity()
@@ -19,26 +25,33 @@ export class UserService {
     return this._db.manager.save(newUser)
   }
 
-  public async getUserLevels(userId: string, guildId: string, cacheTime = 1000): Promise<UserLevelEntity> {
-    const found = await this._db.manager.findOne(UserLevelEntity, {cache: cacheTime, where: {guildId, user: {userId}}})
+  public async getUserLevels(
+    userId: string,
+    guildId: string,
+    cacheTime = 1000
+  ): Promise<UserLevelEntity> {
+    const found = await this._db.manager.findOne(UserLevelEntity, {
+      cache: cacheTime,
+      where: { guildId, user: { userId } },
+    })
     if (found) return found
-    
+
     const newLevel = new UserLevelEntity()
     newLevel.guildId = guildId
     newLevel.user = await this.getByUserId(userId)
 
-		const dcMember = bot.guilds.cache.get(guildId)?.members.cache.get(userId)
-		newLevel.joinDate = dcMember?.joinedAt ?? new Date()
-		newLevel.lastTimeBasedPointUpdate = newLevel.joinDate
+    const dcMember = bot.guilds.cache.get(guildId)?.members.cache.get(userId)
+    newLevel.joinDate = dcMember?.joinedAt ?? new Date()
+    newLevel.lastTimeBasedPointUpdate = newLevel.joinDate
 
-		newLevel.lastPointUpdate = new Date()
-    
+    newLevel.lastPointUpdate = new Date()
+
     return this._db.manager.save(newLevel)
   }
 
-	public async setLanguage(userId: string, lang: Language) {
-		const user = await this.getByUserId(userId)
-		user.language = lang
-		return this._db.manager.save(user)
-	}
+  public async setLanguage(userId: string, lang: Language) {
+    const user = await this.getByUserId(userId)
+    user.language = lang
+    return this._db.manager.save(user)
+  }
 }

@@ -10,6 +10,7 @@ import { Container, Service } from "typedi"
 import { DatabaseService } from "./services/database.service.js"
 import { renderLitMiddleware } from "./helpers/renderLit.js"
 import { LoggingService } from "./services/logging.service.js"
+import { join } from "path"
 
 // setup dependency injection
 DIService.engine = typeDiDependencyRegistryEngine
@@ -29,7 +30,7 @@ export const bot = new Client({
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildMessageReactions,
     IntentsBitField.Flags.GuildVoiceStates,
-		IntentsBitField.Flags.MessageContent,
+    IntentsBitField.Flags.MessageContent,
   ],
 
   // Debug logs are disabled in silent mode
@@ -48,7 +49,7 @@ bot.once("ready", async () => {
   // Synchronize applications commands with Discord
   await bot.initApplicationCommands()
 
-	log.info("Bot Started")
+  log.info("Bot Started")
 })
 
 bot.on("interactionCreate", (interaction: Interaction) => {
@@ -57,6 +58,14 @@ bot.on("interactionCreate", (interaction: Interaction) => {
 
 bot.on("messageCreate", (message: Message) => {
   bot.executeCommand(message)
+})
+
+bot.on("error", (error) => {
+  log.error(error)
+})
+
+process.on("uncaughtException", (error) => {
+  log.error(error)
 })
 
 async function run() {
@@ -77,7 +86,7 @@ async function run() {
   // Webserver initialization ------------
   const server = new Koa()
 
-	server.middleware.unshift(renderLitMiddleware)
+  server.middleware.unshift(renderLitMiddleware)
 
   await server.build()
 

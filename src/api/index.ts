@@ -12,22 +12,20 @@ export class API {
 
   @Get("/reminders")
   async reminders(ctx: Context) {
-    const reminders = await this._database.dataSource.manager.find(ReminderEntity)
-    ctx.body = reminders.map(x => x.message).join(", ")
+    const reminders = await this._database.dataSource.manager.find(
+      ReminderEntity
+    )
+    ctx.body = reminders.map((x) => x.message).join(", ")
   }
 
   @Get("/")
   index(ctx: Context) {
-		const hello = html`<span style="color: blue;">Hello</span>`
-		const guilds = bot.guilds.cache.map(x => `<div>${x.name}</div>`).join(" ")
+    const hello = html`<span style="color: blue;">Hello</span>`
+    const guilds = bot.guilds.cache.map((x) => `<div>${x.name}</div>`).join(" ")
     ctx.body = html`
       <div style="text-align: center">
-        <h1>
-          ${hello} Serving the following guilds
-        </h1>
-        <p>
-          ${guilds}
-        </p>
+        <h1>${hello} Serving the following guilds</h1>
+        <p>${guilds}</p>
       </div>
     `
   }

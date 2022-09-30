@@ -5,14 +5,16 @@ import { GuildEntity } from "./guild.entity.js"
 
 @Entity()
 export class GuildLevelingRoleEntity extends HectorEntity {
-	constructor(input?: DeepPartial<GuildLevelingRoleEntity>) {
-		super()
-		Object.assign(this, input)
-	}
+  constructor(input?: DeepPartial<GuildLevelingRoleEntity>) {
+    super()
+    Object.assign(this, input)
+  }
 
   // General Information
 
-  @ManyToOne(() => GuildEntity, (guild) => guild.levelingRoles, {onDelete: "CASCADE"})
+  @ManyToOne(() => GuildEntity, (guild) => guild.levelingRoles, {
+    onDelete: "CASCADE",
+  })
   guild: Relation<GuildEntity>
 
   /**

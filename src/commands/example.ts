@@ -16,9 +16,7 @@ import { TranslationService } from "../services/translation.service.js"
 
 @Discord()
 export class ExampleCommands {
-	constructor(
-		private readonly _ts: TranslationService,
-	) {}
+  constructor(private readonly _ts: TranslationService) {}
 
   @Slash({ name: "hello" })
   async hello(
@@ -26,7 +24,7 @@ export class ExampleCommands {
     user: User | GuildMember | undefined,
     interaction: CommandInteraction
   ): Promise<void> {
-		await this._ts.setLanguageByInteraction(interaction)
+    await this._ts.setLanguageByInteraction(interaction)
     await interaction.deferReply()
 
     const helloBtn = new ButtonBuilder()

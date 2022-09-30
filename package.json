@@ -10,7 +10,8 @@
     "build:changelog": "npx @discordx/changelog --root=src",
     "dev": "ts-node-esm src/main.ts",
     "start": "node build/main.js",
-    "watch": "nodemon --exec ts-node-esm src/main.ts"
+    "watch": "nodemon --exec ts-node-esm src/main.ts",
+    "lint:fix": "eslint --fix --color --cache src"
   },
   "dependencies": {
     "@discordx/importer": "^1.1.10",
@@ -21,10 +22,13 @@
     "discord.js": "^14.3.0",
     "discordx": "^11.1.10",
     "dotenv": "^16.0.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "i18n": "^0.15.0",
     "koa": "^2.13.4",
     "lit-html": "^2.3.1",
     "pg": "^8.8.0",
+    "prettier-eslint-cli": "^7.1.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.11",
     "tslog": "^3.3.4",

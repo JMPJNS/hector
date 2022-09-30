@@ -5,25 +5,27 @@ import { SelfRoleEntity } from "./selfRole.entity.js"
 
 @Entity()
 export class SelfRoleMessageEntity extends HectorEntity {
-	constructor(input?: DeepPartial<SelfRoleMessageEntity>) {
-		super()
-		Object.assign(this, input)
-	}
+  constructor(input?: DeepPartial<SelfRoleMessageEntity>) {
+    super()
+    Object.assign(this, input)
+  }
 
-  	// General Information
-	@Column()
-	guildId: string
+  // General Information
+  @Column()
+  guildId: string
 
-	@Column()
-	channelId: string
+  @Column()
+  channelId: string
 
-	@Column()
-	messageId: string
+  @Column()
+  messageId: string
 
-	@Column()
-	message?: string
+  @Column()
+  message?: string
 
-	@OneToMany(() => SelfRoleEntity, (sr) => sr.selfRoleMessage, {cascade: true, eager: true})
-  	roles: Relation<SelfRoleEntity[]>
-
+  @OneToMany(() => SelfRoleEntity, (sr) => sr.selfRoleMessage, {
+    cascade: true,
+    eager: true,
+  })
+  roles: Relation<SelfRoleEntity[]>
 }

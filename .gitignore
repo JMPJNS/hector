@@ -6,3 +6,5 @@ hector.sqlite
 # folders
 build
 node_modules
+
+.eslintcache

@@ -4,10 +4,10 @@ import { HectorEntity } from "./base.entity.js"
 
 @Entity()
 export class ReminderEntity extends HectorEntity {
-	constructor(input?: DeepPartial<ReminderEntity>) {
-		super()
-		Object.assign(this, input)
-	}
+  constructor(input?: DeepPartial<ReminderEntity>) {
+    super()
+    Object.assign(this, input)
+  }
 
   @Column()
   message?: string

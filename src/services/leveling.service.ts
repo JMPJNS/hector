@@ -13,8 +13,8 @@ export class LevelingService {
     private readonly _db: DatabaseService,
     private readonly _gs: GuildService,
     private readonly _us: UserService,
-		private readonly _log: LoggingService,
-  ) { }
+    private readonly _log: LoggingService
+  ) {}
 
   public async handleMessage(message: Message<boolean>) {
     // don't track xp for bots
@@ -33,31 +33,45 @@ export class LevelingService {
 
     level.lastPointUpdate ??= new Date()
 
-		// add message based points
+    // add message based points
     const maxPoints = 3
     const minPoints = 1
-    const points = (Math.floor(Math.random() * (maxPoints - minPoints + 1)) + minPoints) * guild.levelingMultiplier
+    const points =
+      (Math.floor(Math.random() * (maxPoints - minPoints + 1)) + minPoints) *
+      guild.levelingMultiplier
 
-		// add time based points, this should be done on the database level but idk how
-		const pointsPerDay = 10
-		const daysSinceLastUpdate = Math.round(Math.abs((level.lastTimeBasedPointUpdate.valueOf() - new Date().valueOf()) / (24 * 60 * 60 * 1000)))
-		level.timeBasedPoints += pointsPerDay * daysSinceLastUpdate * guild.levelingMultiplier
-		level.lastTimeBasedPointUpdate = new Date()
+    // add time based points, this should be done on the database level but idk how
+    const pointsPerDay = 10
+    const daysSinceLastUpdate = Math.round(
+      Math.abs(
+        (level.lastTimeBasedPointUpdate.valueOf() - new Date().valueOf()) /
+          (24 * 60 * 60 * 1000)
+      )
+    )
+    level.timeBasedPoints +=
+      pointsPerDay * daysSinceLastUpdate * guild.levelingMultiplier
+    level.lastTimeBasedPointUpdate = new Date()
 
-		// only add points if the last update was long enough ago
-		if (level.lastPointUpdate < minAge) {
+    // only add points if the last update was long enough ago
+    if (level.lastPointUpdate < minAge) {
       level.points += points
-			level.lastPointUpdate = new Date()
+      level.lastPointUpdate = new Date()
     }
-    
+
     this._db.manager.save(level)
 
     await this.handleLevelUp(level, guild, message)
   }
 
-  public async handleLevelUp(level: UserLevelEntity, guild: GuildEntity, message: Message<boolean>) {
+  public async handleLevelUp(
+    level: UserLevelEntity,
+    guild: GuildEntity,
+    message: Message<boolean>
+  ) {
     // Grab the first role that has less points required than the user currently has
-    const newRoleEntity = guild.levelingRoles?.find(x => level.points > x.pointsRequired)
+    const newRoleEntity = guild.levelingRoles?.find(
+      (x) => level.points > x.pointsRequired
+    )
 
     // exit the function early if there aren't any roles defined
     if (!newRoleEntity) return
@@ -67,14 +81,30 @@ export class LevelingService {
 
     if (changeRole) {
       const newRole = await message.guild?.roles.fetch(newRoleEntity.roleId)
-      const currentRole = level.currentRoleId ? await message.guild?.roles.fetch(level.currentRoleId) : null
+      const currentRole = level.currentRoleId
+        ? await message.guild?.roles.fetch(level.currentRoleId)
+        : null
 
       if (newRole) {
-        await message.member?.roles.add(newRole).catch(e => this._log.error(`could not give role ${newRole.id} to user ${message.member?.id}`, e))
+        await message.member?.roles
+          .add(newRole)
+          .catch((e) =>
+            this._log.error(
+              `could not give role ${newRole.id} to user ${message.member?.id}`,
+              e
+            )
+          )
       }
 
       if (currentRole) {
-        await message.member?.roles.remove(currentRole).catch(e => this._log.error(`could not remove role ${currentRole.id} from user ${message.member?.id}`, e))
+        await message.member?.roles
+          .remove(currentRole)
+          .catch((e) =>
+            this._log.error(
+              `could not remove role ${currentRole.id} from user ${message.member?.id}`,
+              e
+            )
+          )
       }
 
       level.currentRoleId = newRole?.id
@@ -82,13 +112,20 @@ export class LevelingService {
 
       if (guild.levelUpMessage) {
         const messageChannelId = guild.botMessageChannelId ?? message.channelId
-        const messageChannel = await message.client.channels.fetch(messageChannelId).catch(e => this._log.error(`could not get ${guild.guildId}s message channel`, e))
+        const messageChannel = await message.client.channels
+          .fetch(messageChannelId)
+          .catch((e) =>
+            this._log.error(
+              `could not get ${guild.guildId}s message channel`,
+              e
+            )
+          )
 
         const preparedMessage = guild.levelUpMessage
-                                          .replace("[user]", `${message.member}`)
-                                          .replace("[points]", `${level.points}`)
-                                          .replace("[newRole]", newRole?.name ?? "[]")
-                                          .replace("[oldRole]", currentRole?.name ?? "[]")
+          .replace("[user]", `${message.member}`)
+          .replace("[points]", `${level.points}`)
+          .replace("[newRole]", newRole?.name ?? "[]")
+          .replace("[oldRole]", currentRole?.name ?? "[]")
 
         await (messageChannel as TextChannel).send(preparedMessage)
       }

@@ -3,13 +3,13 @@ import { Service } from "typedi"
 
 // Entities
 import {
-	ReminderEntity, 
-	GuildEntity, 
-	UserEntity, 
-	UserLevelEntity, 
-	GuildLevelingRoleEntity,
-	SelfRoleMessageEntity,
-	SelfRoleEntity,
+  ReminderEntity,
+  GuildEntity,
+  UserEntity,
+  UserLevelEntity,
+  GuildLevelingRoleEntity,
+  SelfRoleMessageEntity,
+  SelfRoleEntity,
 } from "../entities/entities.js"
 
 @Service()
@@ -21,14 +21,14 @@ export class DatabaseService {
     const type = process.env.DB_TYPE
 
     const entities = [
-			ReminderEntity, 
-			GuildLevelingRoleEntity, 
-			GuildEntity, 
-			UserLevelEntity, 
-			UserEntity,
-			SelfRoleMessageEntity,
-			SelfRoleEntity,
-		]
+      ReminderEntity,
+      GuildLevelingRoleEntity,
+      GuildEntity,
+      UserLevelEntity,
+      UserEntity,
+      SelfRoleMessageEntity,
+      SelfRoleEntity,
+    ]
 
     if (type == "postgres") {
       this.dataSource = new DataSource({
@@ -37,10 +37,10 @@ export class DatabaseService {
         username: process.env.DB_USER ?? "postgres",
         password: process.env.DB_PASSWORD ?? "",
         host: process.env.DB_HOST ?? "localhost",
-        port: process.env.DB_PORT as unknown as number ?? 5432,
+        port: (process.env.DB_PORT as unknown as number) ?? 5432,
         entities,
       })
-    // if no other type is defined use sqlite default
+      // if no other type is defined use sqlite default
     } else {
       this.dataSource = new DataSource({
         type: "sqlite",
