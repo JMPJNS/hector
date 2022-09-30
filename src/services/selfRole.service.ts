@@ -31,7 +31,7 @@ export class SelfRoleService {
 			throw new EntityNotFoundError(SelfRoleMessageEntity, selfRoleMessageId)
 		}
 
-		const newRole = new SelfRoleEntity({roleId, selfRoleMessage: foundSrMessage})
+		const newRole = new SelfRoleEntity({roleId, selfRoleMessage: foundSrMessage, interactionId: `sr-btn-${selfRoleMessageId}-${roleId}`})
 		return this._db.manager.save(newRole)
 	}
 }

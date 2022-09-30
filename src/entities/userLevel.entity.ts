@@ -5,7 +5,8 @@ import { UserEntity } from "./user.entity.js"
 @Entity()
 export class UserLevelEntity extends HectorEntity {
 	constructor(input?: DeepPartial<UserLevelEntity>) {
-		super(input)
+		super()
+		Object.assign(this, input)
 	}
 
   @ManyToOne(() => UserEntity, (user) => user.levels, {onDelete: "CASCADE"})

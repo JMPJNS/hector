@@ -6,12 +6,16 @@ import { SelfRoleMessageEntity } from "./selfRoleMessage.entity.js"
 @Entity()
 export class SelfRoleEntity extends HectorEntity {
 	constructor(input?: DeepPartial<SelfRoleEntity>) {
-		super(input)
+		super()
+		Object.assign(this, input)
 	}
 
   // General Information	
 	@Column()
 	roleId: string
+
+	@Column()
+	interactionId: string
 
 	@ManyToOne(() => SelfRoleMessageEntity, (m) => m.roles, {onDelete: "CASCADE"})
   selfRoleMessage: Relation<SelfRoleMessageEntity>

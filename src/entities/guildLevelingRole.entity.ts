@@ -6,7 +6,8 @@ import { GuildEntity } from "./guild.entity.js"
 @Entity()
 export class GuildLevelingRoleEntity extends HectorEntity {
 	constructor(input?: DeepPartial<GuildLevelingRoleEntity>) {
-		super(input)
+		super()
+		Object.assign(this, input)
 	}
 
   // General Information

@@ -8,5 +8,6 @@
 	"ROLE_ADD_SUCCESS": "The Role has been added successfuly!",
 	"ROLE_ADD_ERROR": "An error occured while adding the role!",
 	"SR_ADD_ROLES": "Use this ID in the `/self-roles add-role` command to add roles",
-	"NOT_FOUND": "The requested entity was not found"
+	"NOT_FOUND": "The requested entity was not found",
+	"SUCCESS": "Success"
 }

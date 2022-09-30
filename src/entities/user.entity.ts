@@ -6,7 +6,8 @@ import { UserLevelEntity } from "./userLevel.entity.js"
 @Entity()
 export class UserEntity extends HectorEntity {
 	constructor(input?: DeepPartial<UserEntity>) {
-		super(input)
+		super()
+		Object.assign(this, input)
 	}
 
   // General Information

@@ -8,5 +8,6 @@
 	"ROLE_ADD_SUCCESS": "Die Rolle wurde erfolgreich hinzugefügt!",
 	"ROLE_ADD_ERROR": "Beim Hinzufügen der Rolle ist ein Fehler passiert!",
 	"SR_ADD_ROLES": "Verwende diese ID im `/self-roles add-role` command um rollen hinzuzufuegen",
-	"NOT_FOUND": "Das gefragte Objekt wurde nicht gefunden"
+	"NOT_FOUND": "Das gefragte Objekt wurde nicht gefunden",
+	"SUCCESS": "Erfolgreich"
 }

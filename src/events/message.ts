@@ -5,13 +5,13 @@ import { LoggingService } from "../services/logging.service.js"
 import chalk from "chalk"
 
 @Discord()
-export class CommonEvents {
+export class MessageEvents {
   constructor(
 		private _ls: LevelingService,
 		private _log: LoggingService
 	) {}
 
-  @On()
+  @On({event: "messageCreate"})
   async messageCreate([message]: ArgsOf<"messageCreate">, client: Client) {
     this._log.guildSilly(message.guild, chalk.underline(`[user: ${message.author.id}:${message.author.username}]`), "Message Created", message.content)
     await this._ls.handleMessage(message)

@@ -55,22 +55,24 @@ export class SelfRoleCommands {
     id: number,
 		@SlashOption({name: "role", type: ApplicationCommandOptionType.Role})
 		role: Role,
-		@SlashOption({name: "emoji", type: ApplicationCommandOptionType.String})
-		emojiName: string,
     interaction: CommandInteraction
   ): Promise<void> {
 		await this._ts.setLanguageByInteraction(interaction)
+		await interaction.deferReply({ephemeral: true})
 		if (!interaction.guildId || !interaction.channel) {
-			await interaction.reply({ephemeral: true, content: this._ts.__("ONLY_GUILDS")})
+			await interaction.editReply({content: this._ts.__("ONLY_GUILDS")})
 			return
 		}
 
 		const srm = await this._srService.findSelfRoleMessage(id)
 
 		if (!srm || srm.guildId !== interaction.guildId) {
-			await interaction.reply({ephemeral: true, content: this._ts.__("NOT_FOUND")})
+			await interaction.editReply({content: this._ts.__("NOT_FOUND")})
 			return
 		}
+
+		srm.roles ??= []
+
 		if (!srm.roles.find(x => x.roleId === role.id)) {
 			const createdRole = await this._srService.findOrCreateRole(id, role.id)
 			srm.roles.push(createdRole)
@@ -90,9 +92,8 @@ export class SelfRoleCommands {
 
 				const btn = new ButtonBuilder()
 				.setLabel(discordRole.name)
-				.setEmoji({name: emojiName})
 				.setStyle(ButtonStyle.Primary)
-				.setCustomId(`sr-btn-${srm.id}-${role.id}`)
+				.setCustomId(role.interactionId)
 
 				row.addComponents(btn)
 			}
@@ -104,6 +105,8 @@ export class SelfRoleCommands {
 		const embed = new EmbedBuilder().setFooter({text: `ID: ${srm.id}`}).setDescription(srm.message ?? "")
 
 		await discordMessage.edit({embeds: [embed], components})
+
+		await interaction.editReply({content: this._ts.__("SUCCESS")})
   }
 
 }

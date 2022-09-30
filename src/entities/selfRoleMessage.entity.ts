@@ -6,11 +6,11 @@ import { SelfRoleEntity } from "./selfRole.entity.js"
 @Entity()
 export class SelfRoleMessageEntity extends HectorEntity {
 	constructor(input?: DeepPartial<SelfRoleMessageEntity>) {
-		super(input)
-		console.log(this)
+		super()
+		Object.assign(this, input)
 	}
 
-  // General Information
+  	// General Information
 	@Column()
 	guildId: string
 
@@ -23,7 +23,7 @@ export class SelfRoleMessageEntity extends HectorEntity {
 	@Column()
 	message?: string
 
-	@OneToMany(() => SelfRoleEntity, (sr) => sr.selfRoleMessage)
-  roles: Relation<SelfRoleEntity[]>
+	@OneToMany(() => SelfRoleEntity, (sr) => sr.selfRoleMessage, {cascade: true, eager: true})
+  	roles: Relation<SelfRoleEntity[]>
 
 }
