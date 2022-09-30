@@ -104,7 +104,7 @@ export class SelfRoleCommands {
 		const discordMessage = await interaction.channel.messages.fetch(srm.messageId)
 		const embed = new EmbedBuilder().setFooter({text: `ID: ${srm.id}`}).setDescription(srm.message ?? "")
 
-		await discordMessage.edit({embeds: [embed], components})
+		await discordMessage.edit({embeds: [embed], components, content: ""})
 
 		await interaction.editReply({content: this._ts.__("SUCCESS")})
   }
