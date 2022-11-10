@@ -8,16 +8,17 @@ import { DatabaseService } from "../services/database.service.js"
 export class ReminderCommands {
   constructor(private readonly _db: DatabaseService) {}
 
-  @Slash({ name: "remind" })
+  @Slash({ name: "remind", description: "create reminders" })
   async hello(
-    @SlashOption({ name: "user", type: ApplicationCommandOptionType.User })
+    @SlashOption({ name: "user", type: ApplicationCommandOptionType.User, description: "the user you want to remind" })
     user: GuildMember,
     @SlashOption({
       name: "in-minutes",
       type: ApplicationCommandOptionType.Integer,
+      description: "in how many minutes you want the notification to be sent"
     })
     minutes: number,
-    @SlashOption({ name: "message", type: ApplicationCommandOptionType.String })
+    @SlashOption({ name: "message", type: ApplicationCommandOptionType.String, description: "what you want to remind them about" })
     message: string | undefined,
     interaction: CommandInteraction
   ): Promise<void> {

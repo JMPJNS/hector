@@ -18,9 +18,9 @@ import { TranslationService } from "../services/translation.service.js"
 export class ExampleCommands {
   constructor(private readonly _ts: TranslationService) {}
 
-  @Slash({ name: "hello" })
+  @Slash({ name: "hello", description: "this is an example command to show how they are created" })
   async hello(
-    @SlashOption({ name: "user", type: ApplicationCommandOptionType.User })
+    @SlashOption({ name: "user", type: ApplicationCommandOptionType.User, description: "the user you want to say hello to" })
     user: User | GuildMember | undefined,
     interaction: CommandInteraction
   ): Promise<void> {

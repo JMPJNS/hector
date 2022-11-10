@@ -17,7 +17,7 @@ export class TestCommands {
   ) {}
 
   @Guild("716635355020918784")
-  @Slash({ name: "test" })
+  @Slash({ name: "test2", description: "test something i guess" })
   async hello(interaction: CommandInteraction) {
     await this._ts.setLanguageByInteraction(interaction)
     const translated = this._ts.translator.__("HELLO {{name}}", {

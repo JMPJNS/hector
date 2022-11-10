@@ -20,22 +20,21 @@ import {
   SlashGroup,
   SlashOption,
 } from "discordx"
-import { v4 as uuidv4 } from "uuid"
 import { SelfRoleService } from "../services/selfRole.service.js"
 import { TranslationService } from "../services/translation.service.js"
 
 @Discord()
-@SlashGroup({ name: "self-roles" })
+@SlashGroup({ name: "self-roles", description: "create buttons to give yourself roles" })
 export class SelfRoleCommands {
   constructor(
     private readonly _srService: SelfRoleService,
     private readonly _ts: TranslationService
   ) {}
 
-  @Slash({ name: "create" })
+  @Slash({ name: "create", description: "create a self role message" })
   @SlashGroup("self-roles")
   async create(
-    @SlashOption({ name: "message", type: ApplicationCommandOptionType.String })
+    @SlashOption({ name: "message", type: ApplicationCommandOptionType.String, description: "the message that should be shown" })
     message: string,
     interaction: CommandInteraction
   ): Promise<void> {
@@ -63,7 +62,7 @@ export class SelfRoleCommands {
     await discordMessage.edit({ embeds: [embed] })
   }
 
-  @Slash({ name: "add-role" })
+  @Slash({ name: "add-role", description: "add a role to a self role message" })
   @SlashGroup("self-roles")
   async addRole(
     @SlashOption({
@@ -72,7 +71,7 @@ export class SelfRoleCommands {
       description: "you get this ID from the /self-roles create command",
     })
     id: number,
-    @SlashOption({ name: "role", type: ApplicationCommandOptionType.Role })
+    @SlashOption({ name: "role", type: ApplicationCommandOptionType.Role, description: "the role" })
     role: Role,
     interaction: CommandInteraction
   ): Promise<void> {

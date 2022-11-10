@@ -13,7 +13,7 @@ import { UserService } from "../services/user.service.js"
 import { Language } from "../types/types.js"
 
 @Discord()
-@SlashGroup({ name: "settings", nameLocalizations: { de: "einstellungen" } })
+@SlashGroup({ name: "settings", nameLocalizations: { de: "einstellungen" }, description: "change bot settings" })
 export class SettingsCommands {
   constructor(
     private readonly _ts: TranslationService,
@@ -22,7 +22,7 @@ export class SettingsCommands {
   ) {}
 
   @SlashGroup("settings")
-  @Slash({ name: "language", nameLocalizations: { de: "sprache" } })
+  @Slash({ name: "language", nameLocalizations: { de: "sprache" }, description: "change the your prefered language" })
   async language(interaction: CommandInteraction): Promise<void> {
     await this._ts.setLanguageByInteraction(interaction)
     await interaction.deferReply({ ephemeral: true })

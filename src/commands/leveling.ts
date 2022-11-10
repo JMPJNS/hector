@@ -15,7 +15,7 @@ import { TranslationService } from "../services/translation.service.js"
 import { UserService } from "../services/user.service.js"
 
 @Discord()
-@SlashGroup({ name: "leveling" })
+@SlashGroup({ name: "leveling", description: "leveling system" })
 export class LevelingCommands {
   constructor(
     private readonly _db: DatabaseService,
@@ -25,13 +25,14 @@ export class LevelingCommands {
     private readonly _ts: TranslationService
   ) {}
 
-  @Slash({ name: "level" })
+  @Slash({ name: "level", description: "get information about a users current level" })
   @SlashGroup("leveling")
   async level(
     @SlashOption({
       name: "user",
       type: ApplicationCommandOptionType.User,
       required: false,
+      description: "what user you want"
     })
     user: GuildMember | User | undefined,
     interaction: CommandInteraction
@@ -55,6 +56,7 @@ export class LevelingCommands {
   @Slash({
     name: "add-leveling-role",
     nameLocalizations: { de: "leveling-rolle-hinzufügen" },
+    description: "add a role to the leveling system"
   })
   @SlashGroup("leveling")
   async addLevelingRole(
@@ -62,12 +64,14 @@ export class LevelingCommands {
       name: "role",
       nameLocalizations: { de: "rolle" },
       type: ApplicationCommandOptionType.Role,
+      description: "the role you want to add"
     })
     role: Role,
     @SlashOption({
       name: "points",
       nameLocalizations: { de: "punkte" },
       type: ApplicationCommandOptionType.Integer,
+      description: "how many points the role should be worth"
     })
     points: number,
     interaction: CommandInteraction
